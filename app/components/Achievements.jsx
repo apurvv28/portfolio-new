@@ -122,7 +122,6 @@ const Achievements = () => {
         py: { xs: 8, md: 12 },
         position: "relative",
         overflow: "hidden",
-        background: "linear-gradient(to bottom, #0c0e15 0%, #1a1d29 100%)",
       }}
     >
       {/* Background elements */}
