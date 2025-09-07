@@ -26,7 +26,7 @@ const achievements = [
     icon: <EmojiEventsIcon />,
     year: "2025",
     category: "Competition",
-    organization: "IMPETUS & CONCEPTS 2024",
+    organization: "IMPETUS & CONCEPTS 2025",
     tags: ["AI", "EduTech", "Innovation"],
   },
   {
