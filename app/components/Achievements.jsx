@@ -264,7 +264,7 @@ const Achievements = () => {
                     borderRadius: "16px",
                     border: "1px solid rgba(255, 106, 0, 0.15)",
                     height: "100%",
-                    width: 800,
+                    width: {xs:"91vw",lg: 800},
                     display: "flex",
                     flexDirection: "column",
                     transition: "all 0.3s ease",
