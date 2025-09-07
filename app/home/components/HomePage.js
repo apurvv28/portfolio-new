@@ -10,6 +10,7 @@ import EventPlanning from '../../components/EventPlanning';
 import Education from '@/app/components/Education';
 import ResponsibilityCard from '@/app/components/ResponsibilityCard';
 import Footer from '@/app/components/Footer';
+import Achievements from '@/app/components/Achievements';
 
 const HomePage = () => {
   return (
@@ -21,6 +22,7 @@ const HomePage = () => {
         <Experiences />
         <Projects />
         <TechStack />
+        <Achievements />
         <EventPlanning />
         <ResponsibilityCard />
         <Footer />

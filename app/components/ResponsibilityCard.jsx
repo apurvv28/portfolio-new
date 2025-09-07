@@ -22,7 +22,6 @@ const ResponsibilityCard = () => {
     <Box
       sx={{
         py: 10,
-        background: '#181A20',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',

@@ -1,264 +1,430 @@
 'use client';
 
-import React from 'react';
-import { Box, Typography, Container, Grid, Card, CardContent, Avatar } from '@mui/material';
-import { motion } from 'framer-motion';
-import GroupsIcon from '@mui/icons-material/Groups'; // Teamwork
-import ForumIcon from '@mui/icons-material/Forum'; // Communication
-import PsychologyIcon from '@mui/icons-material/Psychology'; // Problem-Solving, Critical Thinking
-import LightbulbIcon from '@mui/icons-material/Lightbulb'; // Creativity
-import AccessTimeIcon from '@mui/icons-material/AccessTime'; // Time Management
-import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects'; // Adaptability
-import LeaderboardIcon from '@mui/icons-material/Leaderboard'; // Leadership
-import EngineeringIcon from '@mui/icons-material/Engineering'; // Work Ethic
-import SyncAltIcon from '@mui/icons-material/SyncAlt'; // Adaptability
+import React, { useRef } from 'react';
+import { Box, Typography, Container, Grid, Card, Avatar, Chip } from '@mui/material';
+import { motion, useInView } from 'framer-motion';
+import GroupsIcon from '@mui/icons-material/Groups';
+import ForumIcon from '@mui/icons-material/Forum';
+import PsychologyIcon from '@mui/icons-material/Psychology';
+import LightbulbIcon from '@mui/icons-material/Lightbulb';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import LeaderboardIcon from '@mui/icons-material/Leaderboard';
+import EngineeringIcon from '@mui/icons-material/Engineering';
+import SyncAltIcon from '@mui/icons-material/SyncAlt';
 
 const techStack = [
-  { name: 'JavaScript', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg' },
-  { name: 'React', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg' },
-  { name: 'Node.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg' },
-  { name: 'Python', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg' },
-  { name: 'HTML & CSS', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg' },
-  { name: 'MongoDB', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg' },
-  { name: 'Express.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg' },
-  { name: 'Next.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg' },
-  { name: 'Material UI', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/materialui/materialui-original.svg' },
-  { name: 'Git', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg' },
-  { name: 'Github', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg' },
-  { name: 'Figma', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg' },
-  { name: 'Strapi', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/strapi/strapi-original.svg' },
-  { name: 'Java & Springboot', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg' },
-  { name: 'C++', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg' },
+  { name: 'JavaScript', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg', proficiency: 90 },
+  { name: 'React', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg', proficiency: 85 },
+  { name: 'Node.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg', proficiency: 80 },
+  { name: 'Python', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg', proficiency: 75 },
+  { name: 'HTML & CSS', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg', proficiency: 95 },
+  { name: 'MongoDB', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg', proficiency: 70 },
+  { name: 'Express.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg', proficiency: 75 },
+  { name: 'Next.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg', proficiency: 85 },
+  { name: 'Material UI', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/materialui/materialui-original.svg', proficiency: 90 },
+  { name: 'Git', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg', proficiency: 80 },
+  { name: 'Github', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg', proficiency: 85 },
+  { name: 'Figma', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg', proficiency: 75 },
+  { name: 'Strapi', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/strapi/strapi-original.svg', proficiency: 65 },
+  { name: 'Java', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg', proficiency: 70 },
+  { name: 'C++', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg', proficiency: 75 },
 ];
 
 const soft = [
-  { name: 'Communication', icon: <ForumIcon /> },
-  { name: 'Teamwork', icon: <GroupsIcon /> },
-  { name: 'Problem-Solving', icon: <PsychologyIcon /> },
-  { name: 'Adaptability', icon: <SyncAltIcon /> },
-  { name: 'Time Management', icon: <AccessTimeIcon /> },
-  { name: 'Leadership', icon: <LeaderboardIcon /> },
-  { name: 'Creativity', icon: <LightbulbIcon /> },
-  { name: 'Critical Thinking', icon: <PsychologyIcon /> },
-  { name: 'Work Ethic', icon: <EngineeringIcon /> },
+  { name: 'Communication', icon: <ForumIcon />, level: 'Expert' },
+  { name: 'Teamwork', icon: <GroupsIcon />, level: 'Expert' },
+  { name: 'Problem-Solving', icon: <PsychologyIcon />, level: 'Advanced' },
+  { name: 'Adaptability', icon: <SyncAltIcon />, level: 'Expert' },
+  { name: 'Time Management', icon: <AccessTimeIcon />, level: 'Advanced' },
+  { name: 'Leadership', icon: <LeaderboardIcon />, level: 'Advanced' },
+  { name: 'Creativity', icon: <LightbulbIcon />, level: 'Expert' },
+  { name: 'Critical Thinking', icon: <PsychologyIcon />, level: 'Advanced' },
+  { name: 'Work Ethic', icon: <EngineeringIcon />, level: 'Expert' },
 ];
 
-const cardVariants = {
+// Animation variants
+const titleVariants = {
   hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    }
+  }
+};
+
+const cardVariants = {
+  hidden: { 
+    opacity: 0, 
+    y: 60,
+  },
   visible: (i) => ({
     opacity: 1,
     y: 0,
-    transition: { delay: 0.1 + i * 0.1, duration: 0.6, ease: 'easeOut' },
-  }),
+    transition: {
+      delay: 0.1 + i * 0.1,
+      duration: 0.6,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    }
+  })
+};
+
+const progressBarVariants = {
+  hidden: { width: 0 },
+  visible: (width) => ({
+    width: `${width}%`,
+    transition: {
+      delay: 0.5,
+      duration: 1.5,
+      ease: "easeOut"
+    }
+  })
 };
 
 const TechStack = () => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.2 });
+
   return (
     <Box
       id="tech-stack"
+      ref={ref}
       sx={{
-        py: 10,
-        background: '#181A20',
+        py: { xs: 8, md: 12 },
         position: 'relative',
         overflow: 'hidden',
       }}
     >
-      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 2 }}>
+      {/* Background elements */}
+      <Box
+        sx={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          opacity: 0.05,
+          backgroundImage: `
+            radial-gradient(circle at 20% 30%, rgba(106, 17, 203, 0.4) 0%, transparent 40%),
+            radial-gradient(circle at 80% 70%, rgba(255, 106, 0, 0.4) 0%, transparent 40%)
+          `,
+          zIndex: 1,
+        }}
+      />
+      
+      {/* Floating particles */}
+      {[...Array(8)].map((_, i) => (
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 1, ease: 'easeOut' }}
-        >
-          <Typography
-            variant="h3"
-            component="h2"
-            gutterBottom
-            textAlign="center"
-            sx={{
-              fontWeight: 700,
-              letterSpacing: 1,
-              fontSize: {
-                xs: '2rem',
-                sm: '2.5rem',
-                md: '3rem',
-                lg: '3.5rem',
-              },
-              color: '#fff',
-              mb: 6,
-            }}
+          key={i}
+          style={{
+            position: 'absolute',
+            width: Math.random() * 6 + 3,
+            height: Math.random() * 6 + 3,
+            background: i % 3 === 0 
+              ? 'rgba(106, 17, 203, 0.6)' 
+              : i % 3 === 1 
+                ? 'rgba(255, 106, 0, 0.6)' 
+                : 'rgba(255, 255, 255, 0.4)',
+            borderRadius: '50%',
+            top: `${Math.random() * 100}%`,
+            left: `${Math.random() * 100}%`,
+            zIndex: 1,
+          }}
+          animate={{
+            y: [0, -15, 0],
+            x: [0, Math.random() * 15 - 7.5, 0],
+          }}
+          transition={{
+            duration: Math.random() * 5 + 3,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: Math.random() * 2,
+          }}
+        />
+      ))}
+
+      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 2 }}>
+        {/* Technical Skills Section */}
+        <Box sx={{ textAlign: 'center', mb: { xs: 6, md: 8 } }}>
+          <motion.div
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            variants={titleVariants}
           >
-            My Technical Skills
-          </Typography>
-        </motion.div>
-        <Grid container spacing={4} justifyContent="center" alignItems="stretch">
+            <Typography
+              variant="h3"
+              component="h2"
+              gutterBottom
+              sx={{
+                fontWeight: 800,
+                letterSpacing: 1,
+                fontSize: {
+                  xs: '2.2rem',
+                  sm: '2.8rem',
+                  md: '3.4rem',
+                  lg: '4rem',
+                },
+                background: 'linear-gradient(135deg, #6a11cb 0%, #ff6a00 100%)',
+                backgroundClip: 'text',
+                textFillColor: 'transparent',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                mb: 2,
+              }}
+            >
+              Technical Skills
+            </Typography>
+            
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: 400,
+                color: 'rgba(255, 255, 255, 0.7)',
+                maxWidth: 600,
+                mx: 'auto',
+                fontSize: {
+                  xs: '1rem',
+                  sm: '1.1rem',
+                  md: '1.2rem',
+                },
+              }}
+            >
+              Technologies I work with to bring ideas to life
+            </Typography>
+          </motion.div>
+        </Box>
+
+        <Grid container spacing={2} justifyContent="center">
           {techStack.map((tech, index) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={tech.name} sx={{ display: 'flex' }}>
-              <Box
-                component={motion.div}
+            <Grid item xs={6} sm={4} md={3} lg={2} key={tech.name}>
+              <motion.div
                 custom={index}
                 initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.2 }}
+                animate={isInView ? "visible" : "hidden"}
                 variants={cardVariants}
-                sx={{
-                  width: '100%',
-                  display: 'flex',
-                  alignItems: 'stretch',
+                whileHover={{ 
+                  y: -5,
+                  transition: { duration: 0.2, ease: "easeOut" }
                 }}
               >
                 <Card
                   sx={{
-                    background: '#23242b', // Dark card background
-                    color: '#fff',         // White text
-                    borderRadius: '20px',
-                    boxShadow: '0 4px 24px rgba(255,106,0,0.10)', // Subtle orange glow
-                    minWidth: 180,
-                    maxWidth: 260,
-                    width: '100%',
+                    background: 'rgba(35, 36, 43, 0.8)',
+                    color: '#fff',
+                    borderRadius: '12px',
+                    p: 2,
+                    textAlign: 'center',
+                    height: '100%',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    py: 4,
-                    px: 2,
-                    transition: 'transform 0.3s, box-shadow 0.3s',
+                    transition: 'all 0.3s ease',
+                    border: '1px solid rgba(255, 106, 0, 0.2)',
                     '&:hover': {
-                      transform: 'scale(1.04)',
-                      boxShadow: '0 8px 32px rgba(255,106,0,0.18)',
+                      boxShadow: '0 8px 20px rgba(106, 17, 203, 0.3)',
+                      transform: 'translateY(-2px)',
                     },
                   }}
                   elevation={0}
                 >
-                  <Avatar
-                    src={tech.icon}
-                    alt={tech.name}
-                    sx={{
-                      width: 56,
-                      height: 56,
-                      mb: 2,
-                      bgcolor: 'transparent',
-                    }}
-                    variant="rounded"
-                  />
+                  {/* Tech icon */}
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={isInView ? { scale: 1 } : { scale: 0 }}
+                    transition={{ delay: 0.3 + index * 0.1, duration: 0.4 }}
+                  >
+                    <Avatar
+                      src={tech.icon}
+                      alt={tech.name}
+                      sx={{
+                        width: 40,
+                        height: 40,
+                        bgcolor: 'transparent',
+                        mb: 1,
+                      }}
+                      variant="rounded"
+                    />
+                  </motion.div>
+                  
+                  {/* Tech name */}
                   <Typography
-                    variant="h6"
+                    variant="body2"
                     sx={{
                       fontWeight: 600,
-                      fontSize: {
-                        xs: '1.05rem',
-                        sm: '1.15rem',
-                        md: '1.18rem',
-                      },
-                      color: '#fff', // White for heading
-                      textAlign: 'center',
+                      color: '#fff',
+                      mb: 1,
+                      fontSize: '0.9rem',
                     }}
                   >
                     {tech.name}
                   </Typography>
+                  
+                  {/* Proficiency bar */}
+                  <Box sx={{ width: '100%' }}>
+                    <Box sx={{ 
+                      width: '100%', 
+                      height: 4, 
+                      backgroundColor: 'rgba(255, 255, 255, 0.1)', 
+                      borderRadius: 2, 
+                      overflow: 'hidden',
+                      position: 'relative',
+                      mb: 0.5
+                    }}>
+                      <motion.div
+                        custom={tech.proficiency}
+                        variants={progressBarVariants}
+                        initial="hidden"
+                        animate={isInView ? "visible" : "hidden"}
+                        style={{
+                          height: '100%',
+                          background: 'linear-gradient(90deg, #6a11cb, #ff6a00)',
+                          borderRadius: 2,
+                          position: 'absolute',
+                          left: 0,
+                          top: 0,
+                        }}
+                      />
+                    </Box>
+                    <Typography variant="caption" sx={{ color: '#ff6a00', fontWeight: 600 }}>
+                      {tech.proficiency}%
+                    </Typography>
+                  </Box>
                 </Card>
-              </Box>
+              </motion.div>
             </Grid>
           ))}
         </Grid>
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 1, ease: 'easeOut' }}
-        >
-          <Typography
-            variant="h3"
-            component="h2"
-            gutterBottom
-            textAlign="center"
-            sx={{
-              fontWeight: 700,
-              letterSpacing: 1,
-              fontSize: {
-                xs: '2rem',
-                sm: '2.5rem',
-                md: '3rem',
-                lg: '3.5rem',
-              },
-              color: '#fff',
-              mt: 8,
-              mb: 6,
-            }}
+
+        {/* Soft Skills Section */}
+        <Box sx={{ textAlign: 'center', mt: { xs: 10, md: 12 }, mb: { xs: 6, md: 8 } }}>
+          <motion.div
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            variants={titleVariants}
           >
-            My Soft Skills
-          </Typography>
-        </motion.div>
-        <Grid container spacing={4} justifyContent="center" alignItems="stretch">
+            <Typography
+              variant="h3"
+              component="h2"
+              gutterBottom
+              sx={{
+                fontWeight: 800,
+                letterSpacing: 1,
+                fontSize: {
+                  xs: '2.2rem',
+                  sm: '2.8rem',
+                  md: '3.4rem',
+                  lg: '4rem',
+                },
+                background: 'linear-gradient(135deg, #ff6a00 0%, #6a11cb 100%)',
+                backgroundClip: 'text',
+                textFillColor: 'transparent',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                mb: 2,
+              }}
+            >
+              Soft Skills
+            </Typography>
+            
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: 400,
+                color: 'rgba(255, 255, 255, 0.7)',
+                maxWidth: 600,
+                mx: 'auto',
+                fontSize: {
+                  xs: '1rem',
+                  sm: '1.1rem',
+                  md: '1.2rem',
+                },
+              }}
+            >
+              The interpersonal skills that complement my technical abilities
+            </Typography>
+          </motion.div>
+        </Box>
+
+        <Grid container spacing={2} justifyContent="center">
           {soft.map((skill, index) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={skill.name} sx={{ display: 'flex' }}>
-              <Box
-                component={motion.div}
+            <Grid item xs={6} sm={4} md={3} lg={2} key={skill.name}>
+              <motion.div
                 custom={index}
                 initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.2 }}
+                animate={isInView ? "visible" : "hidden"}
                 variants={cardVariants}
-                sx={{
-                  width: '100%',
-                  display: 'flex',
-                  alignItems: 'stretch',
+                whileHover={{ 
+                  y: -5,
+                  transition: { duration: 0.2, ease: "easeOut" }
                 }}
               >
                 <Card
                   sx={{
-                    background: '#23242b', // Dark card background
-                    color: '#fff',         // White text
-                    borderRadius: '20px',
-                    boxShadow: '0 4px 24px rgba(255,106,0,0.10)', // Subtle orange glow
-                    minWidth: 180,
-                    maxWidth: 260,
-                    width: '100%',
+                    background: 'rgba(35, 36, 43, 0.8)',
+                    color: '#fff',
+                    borderRadius: '12px',
+                    p: 2,
+                    textAlign: 'center',
+                    height: '100%',
                     display: 'flex',
+                    flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    py: 2,
-                    px: 2,
-                    transition: 'transform 0.3s, box-shadow 0.3s',
+                    transition: 'all 0.3s ease',
+                    border: '1px solid rgba(106, 17, 203, 0.2)',
                     '&:hover': {
-                      transform: 'scale(1.04)',
-                      boxShadow: '0 8px 32px rgba(255,106,0,0.18)',
+                      boxShadow: '0 8px 20px rgba(255, 106, 0, 0.3)',
+                      transform: 'translateY(-2px)',
                     },
                   }}
                   elevation={0}
                 >
-                  <CardContent sx={{ p: 0, textAlign: 'center' }}>
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        fontWeight: 600,
-                        fontSize: {
-                          xs: '1.05rem',
-                          sm: '1.15rem',
-                          md: '1.18rem',
-                        },
-                        color: '#fff', // White for heading
-                      }}
-                    >
-                      {skill.name}
-                    </Typography>
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        fontWeight: 600,
-                        fontSize: {
-                          xs: '1.05rem',
-                          sm: '1.15rem',
-                          md: '1.18rem',
-                        },
-                        color: '#ff6a00', // Accent for icon
-                      }}
-                    >
-                      {skill.icon}
-                    </Typography>
-                  </CardContent>
+                  {/* Skill icon */}
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={isInView ? { scale: 1 } : { scale: 0 }}
+                    transition={{ delay: 0.4 + index * 0.1, duration: 0.4 }}
+                    style={{
+                      color: '#ff6a00',
+                      fontSize: '28px',
+                      marginBottom: '8px',
+                    }}
+                  >
+                    {skill.icon}
+                  </motion.div>
+                  
+                  {/* Skill name */}
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      fontWeight: 600,
+                      color: '#fff',
+                      mb: 1,
+                      fontSize: '0.9rem',
+                    }}
+                  >
+                    {skill.name}
+                  </Typography>
+                  
+                  {/* Skill level */}
+                  <Chip
+                    label={skill.level}
+                    size="small"
+                    sx={{
+                      background: skill.level === 'Expert' 
+                        ? 'linear-gradient(135deg, #6a11cb, #ff6a00)'
+                        : 'rgba(255, 106, 0, 0.2)',
+                      color: '#fff',
+                      fontWeight: 600,
+                      fontSize: '0.65rem',
+                      height: 20,
+                    }}
+                  />
                 </Card>
-              </Box>
+              </motion.div>
             </Grid>
           ))}
         </Grid>
