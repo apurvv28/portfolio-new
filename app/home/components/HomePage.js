@@ -23,8 +23,6 @@ const HomePage = () => {
         <Projects />
         <TechStack />
         <Achievements />
-        <EventPlanning />
-        <ResponsibilityCard />
         <Footer />
       </main>
     </>
